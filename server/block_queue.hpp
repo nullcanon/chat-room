@@ -29,9 +29,9 @@ public:
 
     ~BlockingQueue()
     {
-        sem_destory(&_lock);
-        sem_destory(&_data_sem);
-        sem_destory(&_blank_sem);
+        sem_destroy(&_lock);
+        sem_destroy(&_data_sem);
+        sem_destroy(&_blank_sem);
     }
 
     // 入队列
@@ -42,7 +42,7 @@ public:
 
         sem_wait(&_lock);
         _data[_tail++] = msg;
-        if(_tail >= _data.siz())
+        if(_tail >= _data.size())
         {
             _tail = 0;
         }
@@ -56,7 +56,7 @@ public:
     // 取队首元素
     void PopFront(T* msg)
     {
-        sem_wait(&_data);
+        sem_wait(&_data_sem);
 
         sem_wait(&_lock);
         *msg = _data[_head++];
